@@ -1,18 +1,28 @@
 
-  <%= render 'users/info', user: @user, new_book: @new_book %>
+<div class="col-xs-3">
+  <%= render 'users/info', user: @user %>
+  <% if @user.id == current_user.id %>
+  <%= link_to"",edit_user_path(@user),class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench" %>
+  <% else %>
+  <%= render 'relationships/follow_button', user: @user %>
+  <% end %>
+  <%= render 'books/form', new_book: @new_book %>
+</div>
 
   <div class="col-xs-9">
     <h2>Users All</h2>
     <table class="table table-hover table-inverse">
 
       <tr>
-        <th>Image</th><th>Name</th><th></th>
+        <th>Image</th><th>Name</th><th></th><th></th><th></th>
       </tr>
 
           <% @users.each do |user| %>
       <tr>
         <td><%= attachment_image_tag user, :profile_image, fallback: "no_image.jpg", size: "40x40" %></td>
         <td><%= user.name %></td>
+        <td>フォロー数:<%= user.followings.count %></td>
+        <td>フォローワー数:<%= user.followers.count %></td>
         <td><%= link_to"Show",user_path(user) %></td>
       </tr>
       <% end %>
